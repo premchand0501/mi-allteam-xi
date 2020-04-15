@@ -8,7 +8,7 @@ module.exports = {
     path: path.join(__dirname, "dist"),
     filename: "[name].bundle.js",
     chunkFilename: "[name].[hash].chunk.js",
-    publicPath: "/"
+    publicPath: "/mi-allteam-xi/"
   },
   resolve: {
     extensions: [".js", ".ts"],
