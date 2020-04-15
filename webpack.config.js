@@ -8,7 +8,7 @@ module.exports = {
     path: path.join(__dirname, "dist"),
     filename: "[name].bundle.js",
     chunkFilename: "[name].[hash].chunk.js",
-    publicPath: "/static-assets/scripts/stimulus/dist/"
+    publicPath: "/"
   },
   resolve: {
     extensions: [".js", ".ts"],

@@ -19,6 +19,10 @@ export interface PlayerInfo {
   sport_specific_keys: SportSpecificKeys;
   season_year: string;
 }
+export interface DeletedPlayer {
+  index: number;
+  playerId: string;
+}
 export interface AllTeamData {
   squadList: PlayerInfo[];
   filteredSquadList: PlayerInfo[];
@@ -32,7 +36,7 @@ export interface AllTeamData {
   viceCaptainId: string;
   focusedCaptainVCId: string;
   openSelection: boolean;
-  deletedPlayers: number[];
+  deletedPlayers: DeletedPlayer[];
   dragOverPlayerId: string;
   dragStartPlayer: string;
   allowedOverseasPlayers: number;

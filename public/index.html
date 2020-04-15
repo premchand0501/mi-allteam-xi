@@ -2,50 +2,239 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cash/3.0.0-beta.3/cash.min.js"></script>
-    <script src="main.bundle.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All Team XI</title>
+  <link rel="stylesheet" href="bootstrap.min.css">
+  <style>
+    [v-cloak] {
+      display: none;
+    }
+
+    .container,
+    .container-fluid {
+      padding-bottom: 70px;
+    }
+
+    :disabled {
+      pointer-events: none;
+    }
+
+    .preview-screen {
+      position: absolute;
+      background-color: rgb(35, 179, 35);
+      color: #fff;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .playersRow>.col {
+      text-align: center;
+    }
+
+    .playerWrapper {
+      width: auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 2rem;
+      flex-direction: column;
+    }
+
+    .dragover {
+      border: 1px dotted #fff;
+      min-height: 100px;
+      opacity: 0.75;
+    }
+
+    .playerWrapper>* {
+      cursor: pointer;
+    }
+
+    .playerWrapper p {
+      text-align: center;
+      margin: 0 auto;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      font-size: 12px;
+      background-color: #222;
+      padding: 0.25em 1em;
+      border-radius: 0.5em;
+      margin: 0.5em 0;
+    }
+
+    .playerPhoto {
+      width: 20vw;
+      height: 20vw;
+      max-width: 100px;
+      max-height: 100px;
+      border-radius: 50%;
+      border: 1px solid #ddd;
+      background-color: #ddd;
+    }
+
+    .playerWrapper .btn-group {
+      position: absolute;
+      background: #fff;
+      border-radius: 4px;
+      animation: fadeScale 0.5s 1 forwards;
+    }
+
+    .playerWrapper .btn {
+      font-size: 12px;
+    }
+
+    .closeBtn {
+      width: 1.6rem;
+      height: 1.6rem;
+      border-radius: 0.8rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      right: 0;
+      top: 0;
+      line-height: 1.6rem;
+    }
+
+    .selection-model {
+      z-index: 10;
+      background: #fff;
+      height: 100vh;
+      overflow-y: auto;
+      position: fixed;
+    }
+
+    @keyframes fadeScale {
+      from {
+        transform: scale(0.5) translateY(40px);
+        opacity: 0;
+      }
+
+      to {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+      }
+    }
+  </style>
 </head>
 
 <body>
-    <script>
-        loadWidget('si-listing', 'widget-layout-53')
-    </script>
-    <div class="container" data-controller="galleryFilter">
-        <div class="waf-filter">
-            <button data-action="click->galleryFilter#showTab" data-id="1" data-showMoreUrl=""><span>ALL</span></button>
-            <button data-action="click->galleryFilter#showTab" data-id="2" data-showMoreUrl="/photos"><span>Photos</span></button>
-            <button data-action="click->galleryFilter#showTab" data-id="3" data-showMoreUrl="/videos"><span>Videos</span></button>
-            <a href="javascript:void(0)" data-target="galleryFilter.showMore"><span>Show more</span></a>
+  <script src="main.bundle.js"></script>
+  <script>
+    loadWidget('all-team', 'widget-layout-1');
+  </script>
+  <div data-controller="all-team--widget-layout-1">
+    <div id="allTeam" v-cloak>
+      <div v-if="selectionStep === 0 || openSelection" class="container-fluid"
+        :class="{'selection-model': openSelection}">
+        <h1>Pick your Players</h1>
+        <div class="row">
+          <div class="col col-12-col-md-6 col-sm-6 mb-3">
+            <select name="season" class="form-control" v-model="filterText">
+              <option value="">All Season</option>
+              <option value="2019">2019</option>
+              <option value="2018">2018</option>
+              <option value="2017">2017</option>
+            </select>
+          </div>
+          <div class="col col-12 col-md-6 col-sm-6 mb-3">
+            <div class="form-group">
+              <input type="text" name="search" id="searchField" class="form-control" v-model="searchText"
+                placeholder="Search player by name">
+            </div>
+          </div>
         </div>
-        <div data-target="galleryFilter.tab" data-id="1">
-            <h1>ALL</h1>
-            <ul>
-                <li>photo 1</li>
-                <li>Video 2</li>
-                <li>photo 3</li>
+        <div class="row mb3">
+          <div class="col">
+            <ul class="list-group">
+              <li v-for="(player, index) in getFilteredSquadList"
+                class="list-group-item d-flex align-items-center justify-content-between">
+                <span>
+                  {{player.name}}
+                  <br>
+                  <small>{{player.nationality}} - {{player.season_year}}</small>
+                </span>
+                <button class="btn btn-link" v-if="openSelection" @click="selectPlayer(player)"
+                  :disabled="selectedSquad.filter(p=>p.id && p.id === player.id).length>0">Select{{player.id}}</button>
+                <button class="btn btn-link" v-else
+                  @click="addRemoveInSquad(player)">{{selectedSquad.indexOf(player)>-1?'Remove':'Add'}}</button>
+              </li>
             </ul>
+          </div>
         </div>
-        <div style="display: none;" data-target="galleryFilter.tab" data-id="2">
-            <h1>Photos</h1>
-            <ul>
-                <li>photo 1</li>
-                <li>photo 2</li>
-                <li>photo 3</li>
-            </ul>
+        <div class="position-fixed  p-2" v-if="selectedSquad.length"
+          style="bottom: 0;left: 0;width: 100%; background-color: var(--blue);">
+
+          <div class="text-white d-flex align-items-center justify-content-between w-100"
+            v-if="!toggleSelectedSquadList">
+            <span>
+              Players Left:
+              <span class="badge badge-warning">{{getPlayersLeft}}</span><br>
+              Foreign Players Left:
+              <span class="badge badge-warning">{{getForeignPlayersLeft}}</span>
+            </span>
+            <span>
+              <button class="btn btn-outline-light" :disabled="selectedSquad.length !== allowedSelectionCount"
+                @click="selectionStep = 1">Preview</button>
+            </span>
+          </div>
+          <ul class="list-group" v-else>
+            <li v-for="(player, index) in selectedSquad"
+              class="list-group-item d-flex align-items-center justify-content-between">
+              <span>{{player.name}}</span>
+              <button class="btn btn-link"
+                @click="addRemoveInSquad(player)">{{selectedSquad.indexOf(player)>-1?'Remove':'Add'}}</button>
+            </li>
+          </ul>
         </div>
-        <div style="display: none;" data-target="galleryFilter.tab" data-id="3">
-            <h1>Videos</h1>
-            <ul>
-                <li>Video 1</li>
-                <li>Video 2</li>
-                <li>Video 3</li>
-            </ul>
+      </div>
+      <div v-if="selectionStep === 1" class="container-fluid preview-screen" @click.stop="focusedCaptainVCId = ''">
+        <button class="btn btn-link text-dark p-0" @click="selectionStep = 0">Back</button>
+        <div class="row playersRow">
+          <div class="col" v-for="(player, index) in selectedSquad" :class="{'col-4': index>1, 'col-6': index<2}">
+            <div class="playerWrapper" v-if="player && player.id" draggable="true" @drop.prevent="handleDrop(index)"
+              @dragend.prevent="handleDrop(index)" :class="{'dragover':player.id === dragOverPlayerId}"
+              @dragover.prevent="handleDragOver(player.id)" @dragstart="handleDragStart(player.id)"
+              @dragenter.prevent="handleDragEnter(player.id)">
+              <span class="playerPhoto position-relative"
+                @click.stop="focusedCaptainVCId === player.id?focusedCaptainVCId = '':focusedCaptainVCId = player.id">
+                <span class="badge badge-warning position-absolute" v-if="captainId === player.id"
+                  style="left: -10px; top: 30%;">C</span>
+                <span class="badge badge-warning position-absolute" v-if="viceCaptainId === player.id"
+                  style="left: -10px; top: 30%;">VC</span>
+                <button class="btn btn-danger p-0 border-0 closeBtn" @click.stop="removePlayer(player)">&times;</button>
+              </span>
+              <p @click.stop="focusedCaptainVCId === player.id?focusedCaptainVCId = '':focusedCaptainVCId = player.id">
+                {{shortenPlayerName(player.name)}}
+                <br>
+                <small>{{player.nationality.toLowerCase() === 'india'?'':'(Overseas)'}}</small>
+              </p>
+              <div class="btn-group" v-if="focusedCaptainVCId === player.id">
+                <button class="btn" :class="{'btn-primary': player.id === captainId}"
+                  @click.stop="selectCaptainVC(player, 'c')">C</button>
+                <button class="btn" :class="{'btn-primary': player.id === viceCaptainId}"
+                  @click.stop="selectCaptainVC(player, 'vc')">VC</button>
+              </div>
+            </div>
+            <div class="playerWrapper" v-else>
+              <span class="playerPhoto position-relative">
+              </span>
+              <button class="btn btn-outline-light" @click.stop="openSelection = true">Add Player</button>
+            </div>
+          </div>
         </div>
+        <button class="btn btn-light"
+          :disabled="selectedSquad.filter(p=>p.hasOwnProperty('id')).length === allowedSelectionCount"
+          @click="selectionStep = 2">Proceed</button>
+      </div>
+      <div v-if="selectionStep === 2" class="container-fluid share-screen">
+        <button class="btn btn-warning" @click="selectionStep = 0">Share</button>
+      </div>
     </div>
+
+  </div>
 </body>
 
 </html>

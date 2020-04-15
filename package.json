@@ -10,7 +10,7 @@
     "build": "yarn compilewidget && webpack --config webpack.config.dev.js",
     "start": "yarn build && webpack-dev-server --config webpack.config.dev.js",
     "analyze": "webpack --profile --json > stats.json",
-    "pub": "yarn deploy && gh-pages -d build"
+    "pub": "gh-pages -d dist"
   },
   "dependencies": {
     "es6-promise": "^4.2.5",

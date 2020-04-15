@@ -5,19 +5,9 @@ import Vue from 'vue'
 
 import { polyfill } from "mobile-drag-drop";
 
-// optional import of scroll behaviour
-import { scrollBehaviourDragImageTranslateOverride } from "mobile-drag-drop/scroll-behaviour";
-
-// options are optional ;)
-polyfill({
-  // use this to make use of the scroll behaviour
-  dragImageTranslateOverride: scrollBehaviourDragImageTranslateOverride
-});
+polyfill();
 
 class AllTeamXI extends Controller {
-  // squadList: SquadInfo[];
-  // squadListTarget: HTMLUListElement;
-  // static targets = ['squadList'];
   connect() {
     console.log('all team xi connected');
 
@@ -46,7 +36,8 @@ class AllTeamXI extends Controller {
       },
       computed: {
         getPlayersLeft() {
-          return (this.allowedSelectionCount - this.selectedSquad.length) + '/' + this.allowedSelectionCount;
+          const validPlayers = this.selectedSquad.filter(p => p.hasOwnProperty('id'));
+          return (this.allowedSelectionCount - validPlayers.length) + '/' + this.allowedSelectionCount;
         },
         getForeignPlayersLeft() {
           const overseas = this.selectedSquad.filter(player => player.nationality.toLowerCase() !== 'india')
@@ -87,10 +78,17 @@ class AllTeamXI extends Controller {
           return ''
         },
         selectPlayer(player: PlayerInfo) {
-          const index = this.deletedPlayers[0];
+          const { index, playerId } = this.deletedPlayers[0];
+          console.log(player);
+          const overseas = this.selectedSquad.filter(player => player.nationality.toLowerCase() !== 'india');
+          if (overseas.length === this.allowedOverseasPlayers && player.nationality.toLowerCase() !== 'india') {
+            alert('Only 4 overseas players allowed');
+            return;
+          }
           const squad = this.selectedSquad.map((p, ind) => {
             if (ind === index) {
               p = player;
+              p.id = playerId;
               this.deletedPlayers.shift();
             }
             return p;
@@ -104,13 +102,12 @@ class AllTeamXI extends Controller {
         removePlayer(player: PlayerInfo) {
           const squadList = this.selectedSquad.map((p: PlayerInfo, index: number) => {
             if (p.id === player.id) {
-              this.deletedPlayers.push(index);
+              this.deletedPlayers.push({ index, playerId: p.id });
               delete p.id;
             }
             return p;
           });
           this.selectedSquad = squadList;
-          this.$forceUpdate();
         },
         selectCaptainVC(player: PlayerInfo, type: string) {
           if (type === 'c') {
@@ -182,6 +179,9 @@ class AllTeamXI extends Controller {
           }
         },
         handleDrop(index: number) {
+          if (this.selectionStep !== 1) {
+            return true;
+          }
           const squad = this.selectedSquad;
           const droppedOnPlayer = squad[index];
           let droppingPlayerId = -1;
@@ -197,12 +197,21 @@ class AllTeamXI extends Controller {
           this.dragOverPlayerId = '';
         },
         handleDragOver(playerId: string) {
+          if (this.selectionStep !== 1) {
+            return true;
+          }
           this.dragOverPlayerId = playerId;
         },
         handleDragStart(playerId: string) {
+          if (this.selectionStep !== 1) {
+            return true;
+          }
           this.dragStartPlayer = playerId;
         },
         handleDragEnter(playerId: string) {
+          if (this.selectionStep !== 1) {
+            return true;
+          }
           if (this.mobileDevice)
             this.dragStartPlayer = playerId;
         },

@@ -8,7 +8,7 @@ module.exports = {
     path: path.join(__dirname, "build"),
     filename: "[name].bundle.js",
     chunkFilename: "[name].chunk.js",
-    publicPath: 'http://localhost:9020/'
+    publicPath: 'http://localhost:9021/'
   },
   resolve: {
     extensions: [".js", ".ts"],
@@ -27,6 +27,6 @@ module.exports = {
   },
   devServer: {
     contentBase: path.join(__dirname, 'public'),
-    port: 9020
+    port: 9021
   }
 };
