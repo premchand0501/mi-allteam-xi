@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>All Team XI</title>
-  <link rel="stylesheet" href="./bootstrap.min.css">
+  <link rel="stylesheet" href="bootstrap.min.css">
   <style>
     [v-cloak] {
       display: none;
@@ -13,7 +13,7 @@
 
     .container,
     .container-fluid {
-      padding-bottom: 60px;
+      padding-bottom: 70px;
     }
 
     :disabled {
@@ -121,7 +121,7 @@
 </head>
 
 <body>
-  <script src="./main.bundle.js"></script>
+  <script src="main.bundle.js"></script>
   <script>
     loadWidget('all-team', 'widget-layout-1');
   </script>
@@ -157,7 +157,7 @@
                   <small>{{player.nationality}} - {{player.season_year}}</small>
                 </span>
                 <button class="btn btn-link" v-if="openSelection" @click="selectPlayer(player)"
-                  :disabled="selectedSquad.indexOf(player)>-1">Select</button>
+                  :disabled="selectedSquad.filter(p=>p.id && p.id === player.id).length>0">Select{{player.id}}</button>
                 <button class="btn btn-link" v-else
                   @click="addRemoveInSquad(player)">{{selectedSquad.indexOf(player)>-1?'Remove':'Add'}}</button>
               </li>
@@ -171,15 +171,13 @@
             v-if="!toggleSelectedSquadList">
             <span>
               Players Left:
-              <span class="badge badge-warning">{{getPlayersLeft}}</span>
+              <span class="badge badge-warning">{{getPlayersLeft}}</span><br>
               Foreign Players Left:
               <span class="badge badge-warning">{{getForeignPlayersLeft}}</span>
             </span>
             <span>
               <button class="btn btn-outline-light" :disabled="selectedSquad.length !== allowedSelectionCount"
                 @click="selectionStep = 1">Preview</button>
-              <button class="btn btn-light" :disabled="selectedSquad.length !== allowedSelectionCount"
-                @click="selectionStep = 2">Proceed</button>
             </span>
           </div>
           <ul class="list-group" v-else>
@@ -227,6 +225,9 @@
             </div>
           </div>
         </div>
+        <button class="btn btn-light"
+          :disabled="selectedSquad.filter(p=>p.hasOwnProperty('id')).length === allowedSelectionCount"
+          @click="selectionStep = 2">Proceed</button>
       </div>
       <div v-if="selectionStep === 2" class="container-fluid share-screen">
         <button class="btn btn-warning" @click="selectionStep = 0">Share</button>

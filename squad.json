@@ -1,0 +1,482 @@
+[
+  {
+    "id": "65438",
+    "name": "Anmolpreet Singh",
+    "short_name": "Anmolpreet Singh",
+    "jersey_number": "",
+    "skill_id": "1",
+    "skill_name": "Batsman",
+    "nationality_id": "4",
+    "nationality": "India",
+    "sport_specific_keys": {
+      "is_wicket_keeper": "0",
+      "is_probable": "0",
+      "is_selected": "1",
+      "is_captain": "0",
+      "bowling_style": "Off break",
+      "batting_style": "Right Handed",
+      "is_marquee": "False"
+    },
+    "season_year": "2017"
+  },
+  {
+    "id": "10062",
+    "name": "Chris Lynn",
+    "short_name": "Chris Lynn",
+    "jersey_number": "",
+    "skill_id": "1",
+    "skill_name": "Batsman",
+    "nationality_id": "1",
+    "nationality": "Australia",
+    "sport_specific_keys": {
+      "is_wicket_keeper": "0",
+      "is_probable": "0",
+      "is_selected": "1",
+      "is_captain": "0",
+      "bowling_style": "Slow left-arm orthodox",
+      "batting_style": "Right Handed",
+      "is_marquee": "False"
+    },
+    "season_year": "2017"
+  },
+  {
+    "id": "68182",
+    "name": "Mohsin Khan",
+    "short_name": "Mohsin Khan",
+    "jersey_number": "",
+    "skill_id": "1",
+    "skill_name": "Batsman",
+    "nationality_id": "4",
+    "nationality": "India",
+    "sport_specific_keys": {
+      "is_wicket_keeper": "0",
+      "is_probable": "0",
+      "is_selected": "1",
+      "is_captain": "0",
+      "bowling_style": "Left-arm medium fast",
+      "batting_style": "Left Handed",
+      "is_marquee": "False"
+    },
+    "season_year": "2018"
+  },
+  {
+    "id": "3852",
+    "name": "Rohit Sharma",
+    "short_name": "Rohit Sharma",
+    "jersey_number": "",
+    "skill_id": "1",
+    "skill_name": "Batsman",
+    "nationality_id": "4",
+    "nationality": "India",
+    "sport_specific_keys": {
+      "is_wicket_keeper": "0",
+      "is_probable": "0",
+      "is_selected": "1",
+      "is_captain": "1",
+      "bowling_style": "Off break",
+      "batting_style": "Right Handed",
+      "is_marquee": "False"
+    },
+    "season_year": "2019"
+  },
+  {
+    "id": "4285",
+    "name": "Saurabh Tiwary",
+    "short_name": "Saurabh Tiwary",
+    "jersey_number": "",
+    "skill_id": "1",
+    "skill_name": "Batsman",
+    "nationality_id": "4",
+    "nationality": "India",
+    "sport_specific_keys": {
+      "is_wicket_keeper": "0",
+      "is_probable": "0",
+      "is_selected": "1",
+      "is_captain": "0",
+      "bowling_style": "",
+      "batting_style": "Left Handed",
+      "is_marquee": "False"
+    },
+    "season_year": "2017"
+  },
+  {
+    "id": "67285",
+    "name": "Sherfane Rutherford",
+    "short_name": "Sherfane Rutherford",
+    "jersey_number": "",
+    "skill_id": "1",
+    "skill_name": "Batsman",
+    "nationality_id": "9",
+    "nationality": "West Indies",
+    "sport_specific_keys": {
+      "is_wicket_keeper": "0",
+      "is_probable": "0",
+      "is_selected": "1",
+      "is_captain": "0",
+      "bowling_style": "Right-arm fast medium",
+      "batting_style": "Left Handed",
+      "is_marquee": "False"
+    },
+    "season_year": "2018"
+  },
+  {
+    "id": "11803",
+    "name": "Suryakumar Yadav",
+    "short_name": "Suryakumar Yadav",
+    "jersey_number": "",
+    "skill_id": "1",
+    "skill_name": "Batsman",
+    "nationality_id": "4",
+    "nationality": "India",
+    "sport_specific_keys": {
+      "is_wicket_keeper": "0",
+      "is_probable": "0",
+      "is_selected": "1",
+      "is_captain": "0",
+      "bowling_style": "Right-arm medium",
+      "batting_style": "Right Handed",
+      "is_marquee": "False"
+    },
+    "season_year": "2018"
+  },
+  {
+    "id": "66983",
+    "name": "Anukul Roy",
+    "short_name": "Anukul Roy",
+    "jersey_number": "",
+    "skill_id": "3",
+    "skill_name": "All-Rounder",
+    "nationality_id": "4",
+    "nationality": "India",
+    "sport_specific_keys": {
+      "is_wicket_keeper": "0",
+      "is_probable": "0",
+      "is_selected": "1",
+      "is_captain": "0",
+      "bowling_style": "Slow left-arm orthodox",
+      "batting_style": "Left Handed",
+      "is_marquee": "False"
+    },
+    "season_year": "2019"
+  },
+  {
+    "id": "63751",
+    "name": "Hardik Pandya",
+    "short_name": "Hardik Pandya",
+    "jersey_number": "",
+    "skill_id": "3",
+    "skill_name": "All-Rounder",
+    "nationality_id": "4",
+    "nationality": "India",
+    "sport_specific_keys": {
+      "is_wicket_keeper": "0",
+      "is_probable": "0",
+      "is_selected": "1",
+      "is_captain": "0",
+      "bowling_style": "Right-arm medium fast",
+      "batting_style": "Right Handed",
+      "is_marquee": "False"
+    },
+    "season_year": "2017"
+  },
+  {
+    "id": "3910",
+    "name": "Kieron Pollard",
+    "short_name": "Kieron Pollard",
+    "jersey_number": "",
+    "skill_id": "3",
+    "skill_name": "All-Rounder",
+    "nationality_id": "9",
+    "nationality": "West Indies",
+    "sport_specific_keys": {
+      "is_wicket_keeper": "0",
+      "is_probable": "0",
+      "is_selected": "1",
+      "is_captain": "0",
+      "bowling_style": "Right-arm medium fast",
+      "batting_style": "Right Handed",
+      "is_marquee": "False"
+    },
+    "season_year": "2019"
+  },
+  {
+    "id": "63788",
+    "name": "Krunal Pandya",
+    "short_name": "Krunal Pandya",
+    "jersey_number": "",
+    "skill_id": "3",
+    "skill_name": "All-Rounder",
+    "nationality_id": "4",
+    "nationality": "India",
+    "sport_specific_keys": {
+      "is_wicket_keeper": "0",
+      "is_probable": "0",
+      "is_selected": "1",
+      "is_captain": "0",
+      "bowling_style": "Slow left-arm orthodox",
+      "batting_style": "Left Handed",
+      "is_marquee": "False"
+    },
+    "season_year": "2017"
+  },
+  {
+    "id": "74405",
+    "name": "Prince Balwant Rai",
+    "short_name": "Prince Balwant Rai",
+    "jersey_number": "",
+    "skill_id": "3",
+    "skill_name": "All-Rounder",
+    "nationality_id": "4",
+    "nationality": "India",
+    "sport_specific_keys": {
+      "is_wicket_keeper": "0",
+      "is_probable": "0",
+      "is_selected": "1",
+      "is_captain": "0",
+      "bowling_style": "Leg break",
+      "batting_style": "Right Handed",
+      "is_marquee": "False"
+    },
+    "season_year": "2018"
+  },
+  {
+    "id": "5435",
+    "name": "Aditya Tare",
+    "short_name": "Aditya Tare",
+    "jersey_number": "",
+    "skill_id": "4",
+    "skill_name": "Wicket Keeper",
+    "nationality_id": "4",
+    "nationality": "India",
+    "sport_specific_keys": {
+      "is_wicket_keeper": "1",
+      "is_probable": "0",
+      "is_selected": "1",
+      "is_captain": "0",
+      "bowling_style": "",
+      "batting_style": "Right Handed",
+      "is_marquee": "False"
+    },
+    "season_year": "2018"
+  },
+  {
+    "id": "64712",
+    "name": "Ishan Kishan",
+    "short_name": "Ishan Kishan",
+    "jersey_number": "",
+    "skill_id": "4",
+    "skill_name": "Wicket Keeper",
+    "nationality_id": "4",
+    "nationality": "India",
+    "sport_specific_keys": {
+      "is_wicket_keeper": "1",
+      "is_probable": "0",
+      "is_selected": "1",
+      "is_captain": "0",
+      "bowling_style": "Left-arm medium",
+      "batting_style": "Left Handed",
+      "is_marquee": "False"
+    },
+    "season_year": "2019"
+  },
+  {
+    "id": "28035",
+    "name": "Quinton de Kock",
+    "short_name": "Quinton de Kock",
+    "jersey_number": "",
+    "skill_id": "4",
+    "skill_name": "Wicket Keeper",
+    "nationality_id": "7",
+    "nationality": "South Africa",
+    "sport_specific_keys": {
+      "is_wicket_keeper": "1",
+      "is_probable": "0",
+      "is_selected": "1",
+      "is_captain": "0",
+      "bowling_style": "",
+      "batting_style": "Left Handed",
+      "is_marquee": "False"
+    },
+    "season_year": "2018"
+  },
+  {
+    "id": "4599",
+    "name": "Dhawal Kulkarni",
+    "short_name": "Dhawal Kulkarni",
+    "jersey_number": "",
+    "skill_id": "2",
+    "skill_name": "Bowler",
+    "nationality_id": "4",
+    "nationality": "India",
+    "sport_specific_keys": {
+      "is_wicket_keeper": "0",
+      "is_probable": "0",
+      "is_selected": "1",
+      "is_captain": "0",
+      "bowling_style": "Right-arm medium",
+      "batting_style": "Right Handed",
+      "is_marquee": "False"
+    },
+    "season_year": "2017"
+  },
+  {
+    "id": "74122",
+    "name": "Digvijay Deshmukh",
+    "short_name": "Digvijay Deshmukh",
+    "jersey_number": "",
+    "skill_id": "2",
+    "skill_name": "Bowler",
+    "nationality_id": "4",
+    "nationality": "India",
+    "sport_specific_keys": {
+      "is_wicket_keeper": "0",
+      "is_probable": "0",
+      "is_selected": "1",
+      "is_captain": "0",
+      "bowling_style": "Right-arm fast medium",
+      "batting_style": "Right Handed",
+      "is_marquee": "False"
+    },
+    "season_year": "2017"
+  },
+  {
+    "id": "63755",
+    "name": "Jasprit Bumrah",
+    "short_name": "Jasprit Bumrah",
+    "jersey_number": "",
+    "skill_id": "2",
+    "skill_name": "Bowler",
+    "nationality_id": "4",
+    "nationality": "India",
+    "sport_specific_keys": {
+      "is_wicket_keeper": "0",
+      "is_probable": "0",
+      "is_selected": "1",
+      "is_captain": "0",
+      "bowling_style": "Right-arm fast medium",
+      "batting_style": "Right Handed",
+      "is_marquee": "False"
+    },
+    "season_year": "2018"
+  },
+  {
+    "id": "59611",
+    "name": "Jayant Yadav",
+    "short_name": "Jayant Yadav",
+    "jersey_number": "",
+    "skill_id": "2",
+    "skill_name": "Bowler",
+    "nationality_id": "4",
+    "nationality": "India",
+    "sport_specific_keys": {
+      "is_wicket_keeper": "0",
+      "is_probable": "0",
+      "is_selected": "1",
+      "is_captain": "0",
+      "bowling_style": "Off break",
+      "batting_style": "Right Handed",
+      "is_marquee": "False"
+    },
+    "season_year": "2019"
+  },
+  {
+    "id": "3571",
+    "name": "Lasith Malinga",
+    "short_name": "Lasith Malinga",
+    "jersey_number": "",
+    "skill_id": "2",
+    "skill_name": "Bowler",
+    "nationality_id": "8",
+    "nationality": "Sri Lanka",
+    "sport_specific_keys": {
+      "is_wicket_keeper": "0",
+      "is_probable": "0",
+      "is_selected": "1",
+      "is_captain": "0",
+      "bowling_style": "Right-arm fast",
+      "batting_style": "Right Handed",
+      "is_marquee": "False"
+    },
+    "season_year": "2018"
+  },
+  {
+    "id": "11938",
+    "name": "Mitchell McClenaghan",
+    "short_name": "Mitchell McClenaghan",
+    "jersey_number": "",
+    "skill_id": "2",
+    "skill_name": "Bowler",
+    "nationality_id": "5",
+    "nationality": "New Zealand",
+    "sport_specific_keys": {
+      "is_wicket_keeper": "0",
+      "is_probable": "0",
+      "is_selected": "1",
+      "is_captain": "0",
+      "bowling_style": "Left-arm medium fast",
+      "batting_style": "Left Handed",
+      "is_marquee": "False"
+    },
+    "season_year": "2017"
+  },
+  {
+    "id": "10090",
+    "name": "Nathan Coulter-Nile",
+    "short_name": "Nathan Coulter-Nile",
+    "jersey_number": "",
+    "skill_id": "2",
+    "skill_name": "Bowler",
+    "nationality_id": "1",
+    "nationality": "Australia",
+    "sport_specific_keys": {
+      "is_wicket_keeper": "0",
+      "is_probable": "0",
+      "is_selected": "1",
+      "is_captain": "0",
+      "bowling_style": "Right-arm fast",
+      "batting_style": "Right Handed",
+      "is_marquee": "False"
+    },
+    "season_year": "2018"
+  },
+  {
+    "id": "66823",
+    "name": "Rahul Chahar",
+    "short_name": "Rahul Chahar",
+    "jersey_number": "",
+    "skill_id": "2",
+    "skill_name": "Bowler",
+    "nationality_id": "4",
+    "nationality": "India",
+    "sport_specific_keys": {
+      "is_wicket_keeper": "0",
+      "is_probable": "0",
+      "is_selected": "1",
+      "is_captain": "0",
+      "bowling_style": "Leg break googly",
+      "batting_style": "Right Handed",
+      "is_marquee": "False"
+    },
+    "season_year": "2019"
+  },
+  {
+    "id": "4338",
+    "name": "Trent Boult",
+    "short_name": "Trent Boult",
+    "jersey_number": "",
+    "skill_id": "2",
+    "skill_name": "Bowler",
+    "nationality_id": "5",
+    "nationality": "New Zealand",
+    "sport_specific_keys": {
+      "is_wicket_keeper": "0",
+      "is_probable": "0",
+      "is_selected": "1",
+      "is_captain": "0",
+      "bowling_style": "Left-arm fast medium",
+      "batting_style": "Right Handed",
+      "is_marquee": "False"
+    },
+    "season_year": "2019"
+  }
+]
