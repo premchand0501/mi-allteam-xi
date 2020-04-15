@@ -171,7 +171,7 @@ class AllTeamXI extends Controller {
           }
         },
         async fetchPlayers() {
-          const res: PlayerInfo[] = (await (await fetch('/squad.json')).json()) as PlayerInfo[];
+          const res: PlayerInfo[] = (await (await fetch('./squad.json')).json()) as PlayerInfo[];
           console.log(res);
           if (res.length) {
             this.squadList = res;
