@@ -1,6 +1,6 @@
 import { Controller } from "stimulus";
 import { ApplicationObj } from '../../main';
-import { AllTeamData, AllTeamMethods, AllTeamComputedProperties, PlayerData } from './all-team.interface';
+import { PlayerInfo, AllTeamData, AllTeamMethods, AllTeamComputedProperties, PlayerData } from './all-team.interface';
 import Vue from 'vue'
 
 import { polyfill } from "mobile-drag-drop";
@@ -23,27 +23,26 @@ class AllTeamXI extends Controller {
         selectedSquad: [],
         toggleSelectedSquadList: false,
         allowedSelectionCount: 11,
-        season: '2019',
+        filterText: '2019',
         searchText: '',
         selectionStep: 0,
         captainId: '',
-        wicketKeeperId: '',
-        focusedCaptainWKId: '',
+        viceCaptainId: '',
+        focusedCaptainVCId: '',
         openSelection: false,
         deletedPlayers: [],
         dragOverPlayerId: '',
-        dragStartPlayerId: '',
+        dragStartPlayer: '',
         allowedOverseasPlayers: 4,
         endPoints,
-        loadingStatus: 0
       },
       computed: {
         getPlayersLeft() {
-          const validPlayers = this.selectedSquad.filter(p => p && p.player_details.hasOwnProperty('id'));
+          const validPlayers = this.selectedSquad.filter(p => p.hasOwnProperty('id'));
           return (this.allowedSelectionCount - validPlayers.length) + '/' + this.allowedSelectionCount;
         },
         getForeignPlayersLeft() {
-          const overseas = this.selectedSquad.filter(player => player && player.player_details.nationality.toLowerCase() !== 'india')
+          const overseas = this.selectedSquad.filter(player => player.nationality.toLowerCase() !== 'india')
           return (this.allowedOverseasPlayers - overseas.length) + '/' + this.allowedOverseasPlayers;
         },
         getFilteredSquadList() {
@@ -57,19 +56,6 @@ class AllTeamXI extends Controller {
         },
       },
       methods: {
-        clearSearch(e: Event) {
-          this.searchText = '';
-          console.log(e.target);
-          const btnEl: HTMLButtonElement = e.target as HTMLButtonElement;
-          const parent = btnEl.parentElement;
-          if (parent) {
-            const parentParent = parent.parentElement;
-            if (parentParent) {
-              const input = parentParent.querySelector('input');
-              input && input.focus();
-            }
-          }
-        },
         shortenPlayerName(name): string {
           const wordArr = name.split(' ');
           if (wordArr.length === 1) {
@@ -84,18 +70,18 @@ class AllTeamXI extends Controller {
           }
           return ''
         },
-        selectPlayer(player: PlayerData) {
+        selectPlayer(player: PlayerInfo) {
           const { index, playerId } = this.deletedPlayers[0];
           console.log(player);
-          const overseas = this.selectedSquad.filter(player => player && player.player_details.nationality.toLowerCase() !== 'india');
-          if (overseas.length === this.allowedOverseasPlayers && player.player_details.nationality.toLowerCase() !== 'india') {
+          const overseas = this.selectedSquad.filter(player => player.nationality.toLowerCase() !== 'india');
+          if (overseas.length === this.allowedOverseasPlayers && player.nationality.toLowerCase() !== 'india') {
             alert('Only 4 overseas players allowed');
             return;
           }
           const squad = this.selectedSquad.map((p, ind) => {
             if (ind === index) {
               p = player;
-              playerId && (p.player_details.id = playerId);
+              p.id = playerId;
               this.deletedPlayers.shift();
             }
             return p;
@@ -106,44 +92,47 @@ class AllTeamXI extends Controller {
           this.selectedSquad = squad;
           console.log(this.selectedSquad.length);
         },
-        removePlayer(player: PlayerData, index: number) {
-          this.deletedPlayers.push({ index, playerId: player.player_details.id });
-          const squadList = this.selectedSquad
-          squadList[index] = null;
+        removePlayer(player: PlayerInfo) {
+          const squadList = this.selectedSquad.map((p: PlayerInfo, index: number) => {
+            if (p.id === player.id) {
+              this.deletedPlayers.push({ index, playerId: p.id });
+              delete p.id;
+            }
+            return p;
+          });
           this.selectedSquad = squadList;
-          this.$forceUpdate();
         },
-        selectCaptainWK(player: PlayerData, type: string) {
+        selectCaptainVC(player: PlayerInfo, type: string) {
           if (type === 'c') {
-            if (this.captainId === this.focusedCaptainWKId) {
+            if (this.captainId === this.focusedCaptainVCId) {
               this.captainId = ''
             }
             else {
-              if (player.player_details.id === this.wicketKeeperId) {
-                this.wicketKeeperId = ''
+              if (player.id === this.viceCaptainId) {
+                this.viceCaptainId = ''
               }
-              this.captainId = player.player_details.id
+              this.captainId = player.id
             }
           }
-          else if (type === 'wk') {
-            if (this.wicketKeeperId === this.focusedCaptainWKId) {
-              this.wicketKeeperId = ''
+          else if (type === 'vc') {
+            if (this.viceCaptainId === this.focusedCaptainVCId) {
+              this.viceCaptainId = ''
             }
             else {
-              if (player.player_details.id === this.captainId) {
+              if (player.id === this.captainId) {
                 this.captainId = ''
               }
-              this.wicketKeeperId = player.player_details.id
+              this.viceCaptainId = player.id
             }
           }
         },
-        addRemoveInSquad(player: PlayerData) {
+        addRemoveInSquad(player: PlayerInfo) {
           if (!this.selectedSquad.length) {
-            if (player.player_details.nationality.toLowerCase() === 'india') {
+            if (player.nationality.toLowerCase() === 'india') {
               this.selectedSquad.push(player);
             }
             else {
-              const overseas = this.selectedSquad.filter(player => player && player.player_details.nationality.toLowerCase() !== 'india');
+              const overseas = this.selectedSquad.filter(player => player.nationality.toLowerCase() !== 'india');
 
               if (overseas.length < this.allowedOverseasPlayers)
                 this.selectedSquad.push(player);
@@ -161,11 +150,11 @@ class AllTeamXI extends Controller {
               alert('11 players are selected already, please remove any player to add another.');
               return;
             }
-            if (player.player_details.nationality.toLowerCase() === 'india') {
+            if (player.nationality.toLowerCase() === 'india') {
               this.selectedSquad.push(player);
             }
             else {
-              const overseas = this.selectedSquad.filter(player => player && player.player_details.nationality.toLowerCase() !== 'india');
+              const overseas = this.selectedSquad.filter(player => player.nationality.toLowerCase() !== 'india');
 
               if (overseas.length < this.allowedOverseasPlayers)
                 this.selectedSquad.push(player);
@@ -174,34 +163,12 @@ class AllTeamXI extends Controller {
             }
           }
         },
-        async fetchPlayers(season: string) {
-          this.loadingStatus = 1;
-          try {
-            const res: any = (await (await fetch(this.endPoints[season])).json());
-            console.log(res);
-            if (Object.keys(res).length && res.players) {
-              this.squadList = res.players;
-              this.squadList = this.squadList.sort((p1, p2) => {
-                const a = p1.player_details.name.toUpperCase();
-                const b = p2.player_details.name.toUpperCase();
-                if (a > b) {
-                  return 1
-                }
-                if (a < b) {
-                  return -1
-                }
-                return 0
-              });
-              // for (let i = 0; i < this.allowedSelectionCount; i++) {
-              //   this.selectedSquad[i] = null;
-              //   this.deletedPlayers[i] = { index: i, playerId: '' }
-              // }
-              this.loadingStatus = 0;
-            }
-          }
-          catch (e) {
-            console.log(e);
-            this.loadingStatus = 2;
+        async fetchPlayers() {
+          const res: any = (await (await fetch(this.endPoints[this.filterText])).json());
+          console.log(res);
+          if (Object.keys(res).length && res.players) {
+            this.squadList = res.players;
+            // this.selectedSquad = this.squadList.slice(0, 11);
           }
         },
         handleDrop(index: number) {
@@ -212,17 +179,15 @@ class AllTeamXI extends Controller {
           const droppedOnPlayer = squad[index];
           let droppingPlayerId = -1;
           const droppingPlayer = squad.filter((player, index) => {
-            if (player && this.dragStartPlayerId === player.player_details.id) {
+            if (this.dragStartPlayer === player.id) {
               droppingPlayerId = index;
               return player;
             }
           });
           squad[index] = droppingPlayer[0];
           squad[droppingPlayerId] = droppedOnPlayer;
-          console.log(this.dragOverPlayerId, this.dragStartPlayerId, droppedOnPlayer, droppingPlayer);
           this.selectedSquad = squad;
           this.dragOverPlayerId = '';
-          // this.dragStartPlayerId = '';
         },
         handleDragOver(playerId: string) {
           if (this.selectionStep !== 1) {
@@ -234,18 +199,18 @@ class AllTeamXI extends Controller {
           if (this.selectionStep !== 1) {
             return true;
           }
-          this.dragStartPlayerId = playerId;
+          this.dragStartPlayer = playerId;
         },
         handleDragEnter(playerId: string) {
           if (this.selectionStep !== 1) {
             return true;
           }
           if (this.mobileDevice)
-            this.dragStartPlayerId = playerId;
+            this.dragStartPlayer = playerId;
         },
       },
       mounted() {
-        this.fetchPlayers(this.season);
+        this.fetchPlayers();
         console.log(this.endPoints);
       }
     })

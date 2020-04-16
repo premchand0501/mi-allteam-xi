@@ -5,7 +5,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>All Team XI</title>
-  <base href="https://premchand0501.github.io/mi-allteam-xi/">
   <link rel="stylesheet" href="./bootstrap.min.css">
   <style>
     [v-cloak] {
@@ -22,7 +21,8 @@
     }
 
     .preview-screen {
-      position: absolute;
+      position: fixed;
+      z-index: 9;
       background-color: rgb(35, 179, 35);
       color: #fff;
       height: 100vh;
@@ -118,6 +118,10 @@
         opacity: 1;
       }
     }
+
+    .no-scroll {
+      overflow: hidden;
+    }
   </style>
 </head>
 
@@ -129,21 +133,23 @@
   <div data-controller="all-team--widget-layout-1">
     <div id="allTeam" v-cloak>
       <div v-if="selectionStep === 0 || openSelection" class="container-fluid"
-        :class="{'selection-model': openSelection}">
+        :class="{'selection-model': openSelection, 'no-scroll': toggleSelectedSquadList}">
         <h1>Pick your Players</h1>
         <div class="row">
           <div class="col col-12-col-md-6 col-sm-6 mb-3">
-            <select name="season" class="form-control" v-model="filterText">
+            <select name="season" class="form-control" v-model="season" @change="fetchPlayers(season)"
+              :disabled="loadingStatus === 1">
               <option value="">All Season</option>
-              <option value="2019">2019</option>
-              <option value="2018">2018</option>
-              <option value="2017">2017</option>
+              <option v-for="(value, key) in endPoints" :value="key">{{key}}</option>
             </select>
           </div>
           <div class="col col-12 col-md-6 col-sm-6 mb-3">
-            <div class="form-group">
+            <div class="input-group">
               <input type="text" name="search" id="searchField" class="form-control" v-model="searchText"
                 placeholder="Search player by name">
+              <div class="input-group-append" v-show="searchText">
+                <button class="btn btn-primary" @click="clearSearch($event)">&times;</span>
+              </div>
             </div>
           </div>
         </div>
@@ -153,23 +159,23 @@
               <li v-for="(player, index) in getFilteredSquadList"
                 class="list-group-item d-flex align-items-center justify-content-between">
                 <span>
-                  {{player.name}}
+                  {{player.player_details.name}}
                   <br>
-                  <small>{{player.nationality}} - {{player.season_year}}</small>
+                  <small>{{player.player_details.nationality}}</small>
                 </span>
                 <button class="btn btn-link" v-if="openSelection" @click="selectPlayer(player)"
-                  :disabled="selectedSquad.filter(p=>p.id && p.id === player.id).length>0">Select{{player.id}}</button>
+                  :disabled="selectedSquad.filter(p=>p && p.player_details.id === player.player_details.id).length>0">Select</button>
                 <button class="btn btn-link" v-else
                   @click="addRemoveInSquad(player)">{{selectedSquad.indexOf(player)>-1?'Remove':'Add'}}</button>
               </li>
             </ul>
           </div>
         </div>
-        <div class="position-fixed  p-2" v-if="selectedSquad.length"
-          style="bottom: 0;left: 0;width: 100%; background-color: var(--blue);">
+        <div class="position-fixed p-2" v-if="selectedSquad.length"
+          style="bottom: 0;left: 0;width: 100%; background-color: var(--blue); overflow-y: auto;z-index: 10;"
+          :class="{'h-100': toggleSelectedSquadList}">
 
-          <div class="text-white d-flex align-items-center justify-content-between w-100"
-            v-if="!toggleSelectedSquadList">
+          <div class="text-white d-flex align-items-center justify-content-between w-100">
             <span>
               Players Left:
               <span class="badge badge-warning">{{getPlayersLeft}}</span><br>
@@ -177,46 +183,58 @@
               <span class="badge badge-warning">{{getForeignPlayersLeft}}</span>
             </span>
             <span>
-              <button class="btn btn-outline-light" :disabled="selectedSquad.length !== allowedSelectionCount"
-                @click="selectionStep = 1">Preview</button>
+              <button class="btn btn-outline-light" @click="toggleSelectedSquadList = !toggleSelectedSquadList"
+                v-html="!toggleSelectedSquadList?'&#x25B2;':'&#x25BC;'"></button>
+              <button class="btn btn-outline-light"
+                :disabled="selectedSquad.filter(p=>p && p.player_details).length !== allowedSelectionCount"
+                @click.stop="selectionStep = 1">Preview</button>
             </span>
           </div>
-          <ul class="list-group" v-else>
+          <ul class="list-group mt-3" v-show="toggleSelectedSquadList">
             <li v-for="(player, index) in selectedSquad"
               class="list-group-item d-flex align-items-center justify-content-between">
-              <span>{{player.name}}</span>
+              <span v-if="player">{{player.player_details.name}}</span>
               <button class="btn btn-link"
                 @click="addRemoveInSquad(player)">{{selectedSquad.indexOf(player)>-1?'Remove':'Add'}}</button>
             </li>
           </ul>
         </div>
       </div>
-      <div v-if="selectionStep === 1" class="container-fluid preview-screen" @click.stop="focusedCaptainVCId = ''">
-        <button class="btn btn-link text-dark p-0" @click="selectionStep = 0">Back</button>
+      <div v-if="selectionStep === 1" class="container-fluid preview-screen" @click.stop="focusedCaptainWKId = ''"
+        style="padding-top: 70px;">
         <div class="row playersRow">
+          <div class="navbar w-100 bg-light mb-3 d-flex align-items-center justify-content-between position-fixed"
+            style="z-index: 1; filter: opacity(0.9); top:0">
+            <button class="btn btn-link text-dark p-0" @click="selectionStep = 0">&#9664;</button>
+            <p class="text-dark m-0 text-right"><small>Drag and drop players to reposition</small></p>
+          </div>
           <div class="col" v-for="(player, index) in selectedSquad" :class="{'col-4': index>1, 'col-6': index<2}">
-            <div class="playerWrapper" v-if="player && player.id" draggable="true" @drop.prevent="handleDrop(index)"
-              @dragend.prevent="handleDrop(index)" :class="{'dragover':player.id === dragOverPlayerId}"
-              @dragover.prevent="handleDragOver(player.id)" @dragstart="handleDragStart(player.id)"
-              @dragenter.prevent="handleDragEnter(player.id)">
+            <div class="playerWrapper" :class="{'dragover':player.player_details.id === dragOverPlayerId}" v-if="player"
+              draggable="true" @drop.prevent="!mobileDevice && handleDrop(index)"
+              @dragend.prevent="mobileDevice && handleDrop(index)"
+              @dragover.prevent="handleDragOver(player.player_details.id)"
+              @dragstart="handleDragStart(player.player_details.id)"
+              @dragenter.prevent="handleDragEnter(player.player_details.id)">
               <span class="playerPhoto position-relative"
-                @click.stop="focusedCaptainVCId === player.id?focusedCaptainVCId = '':focusedCaptainVCId = player.id">
-                <span class="badge badge-warning position-absolute" v-if="captainId === player.id"
+                @click.stop="focusedCaptainWKId === player.player_details.id?focusedCaptainWKId = '':focusedCaptainWKId = player.player_details.id">
+                <span class="badge badge-warning position-absolute" v-if="captainId === player.player_details.id"
                   style="left: -10px; top: 30%;">C</span>
-                <span class="badge badge-warning position-absolute" v-if="viceCaptainId === player.id"
-                  style="left: -10px; top: 30%;">VC</span>
-                <button class="btn btn-danger p-0 border-0 closeBtn" @click.stop="removePlayer(player)">&times;</button>
+                <span class="badge badge-warning position-absolute" v-if="wicketKeeperId === player.player_details.id"
+                  style="left: -10px; top: 30%;">WK</span>
+                <button class="btn btn-danger p-0 border-0 closeBtn"
+                  @click.stop="removePlayer(player, index)">&times;</button>
               </span>
-              <p @click.stop="focusedCaptainVCId === player.id?focusedCaptainVCId = '':focusedCaptainVCId = player.id">
-                {{shortenPlayerName(player.name)}}
+              <p
+                @click.stop="focusedCaptainWKId === player.player_details.id?focusedCaptainWKId = '':focusedCaptainWKId = player.player_details.id">
+                {{shortenPlayerName(player.player_details.name)}}
                 <br>
-                <small>{{player.nationality.toLowerCase() === 'india'?'':'(Overseas)'}}</small>
+                <small>{{player.player_details.nationality.toLowerCase() === 'india'?'':'(Overseas)'}}</small>
               </p>
-              <div class="btn-group" v-if="focusedCaptainVCId === player.id">
-                <button class="btn" :class="{'btn-primary': player.id === captainId}"
-                  @click.stop="selectCaptainVC(player, 'c')">C</button>
-                <button class="btn" :class="{'btn-primary': player.id === viceCaptainId}"
-                  @click.stop="selectCaptainVC(player, 'vc')">VC</button>
+              <div class="btn-group" v-if="focusedCaptainWKId === player.player_details.id">
+                <button class="btn" :class="{'btn-primary': player.player_details.id === captainId}"
+                  @click.stop="selectCaptainWK(player, 'c')">C</button>
+                <button class="btn" :class="{'btn-primary': player.player_details.id === wicketKeeperId}"
+                  @click.stop="selectCaptainWK(player, 'wk')">WK</button>
               </div>
             </div>
             <div class="playerWrapper" v-else>
@@ -227,7 +245,7 @@
           </div>
         </div>
         <button class="btn btn-light"
-          :disabled="selectedSquad.filter(p=>p.hasOwnProperty('id')).length === allowedSelectionCount"
+          :disabled="(wicketKeeperId === '' || captainId === '') || selectedSquad.filter(p=>p && p.player_details.hasOwnProperty('id')).length !== allowedSelectionCount"
           @click="selectionStep = 2">Proceed</button>
       </div>
       <div v-if="selectionStep === 2" class="container-fluid share-screen">
