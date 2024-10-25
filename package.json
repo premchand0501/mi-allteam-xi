@@ -18,7 +18,7 @@
     "mobile-drag-drop": "^2.3.0-rc.2",
     "stimulus": "^1.1.1",
     "tslib": "^1.9.3",
-    "vue": "2.6.6",
+    "vue": "3.0.0",
     "vue-class-component": "7.0.1"
   },
   "devDependencies": {
